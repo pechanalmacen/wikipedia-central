@@ -1,0 +1,278 @@
+{
+  "categories": [
+    {
+      "id": "ciencias",
+      "name": "Ciencias Naturales",
+      "icon": "public",
+      "color": "#00f2fe",
+      "gradient": "linear-gradient(135deg, #00c6ff, #0072ff)"
+    },
+    {
+      "id": "tecnologia",
+      "name": "Tecnología e IA",
+      "icon": "memory",
+      "color": "#a855f7",
+      "gradient": "linear-gradient(135deg, #a855f7, #6366f1)"
+    },
+    {
+      "id": "historia",
+      "name": "Historia y Cultura",
+      "icon": "history",
+      "color": "#f59e0b",
+      "gradient": "linear-gradient(135deg, #f59e0b, #d97706)"
+    },
+    {
+      "id": "fisica",
+      "name": "Física y Universo",
+      "icon": "specific_gravity",
+      "color": "#10b981",
+      "gradient": "linear-gradient(135deg, #10b981, #059669)"
+    },
+    {
+      "id": "arte",
+      "name": "Arte y Diseño",
+      "icon": "palette",
+      "color": "#ec4899",
+      "gradient": "linear-gradient(135deg, #ec4899, #be185d)"
+    }
+  ],
+  "topics": [
+    {
+      "id": "prueba",
+      "title": "prueba",
+      "category": "arte",
+      "badge": "asasa",
+      "summary": "sasa",
+      "coverImage": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=800&q=80",
+      "chapters": [
+        {
+          "id": "cap-1",
+          "title": "prueba",
+          "markdownFile": "content/prueba.md",
+          "videos": [],
+          "games": [
+            {
+              "title": "prueba de juego",
+              "embedUrl": "https://games.poki.com/458768/e5ba5dff-6567-4f5b-8db2-7ba6a7258275?tag=pg-f74fd3a48a0dbe845c3b73bbbe8d6d560894130f&site_id=52&iso_lang=es&country=MX&poki_url=https://poki.com/es/g/sort-the-court&hoist=yes&nonPersonalized=n&cloudsavegames=n&familyFriendly=n&device=desktop&categories=6,66&special_condition=landing&user_id=anUiD7h2GaeIA38UkPmT0g",
+              "type": "juego de itch io",
+              "description": "probando esta mamada"
+            }
+          ],
+          "pdfs": [],
+          "links": []
+        }
+      ]
+    },
+    {
+      "id": "astronomia-sistema-solar",
+      "title": "Exploración del Sistema Solar",
+      "category": "ciencias",
+      "badge": "Popular",
+      "summary": "Un viaje fascinante por el Sol, los 8 planetas principales, lunas misteriosas, asteroides y las misiones espaciales humanas.",
+      "coverImage": "https://images.unsplash.com/photo-1614728894747-a83421e2b9c9?auto=format&fit=crop&w=800&q=80",
+      "chapters": [
+        {
+          "id": "cap-1-introduccion",
+          "title": "1. Estructura y Origen del Sistema Solar",
+          "markdownFile": "content/astronomia-sistema-solar.md",
+          "videos": [
+            {
+              "title": "El Origen del Sistema Solar (Documental)",
+              "url": "https://www.youtube.com/embed/gI8-3L-L4D0",
+              "provider": "youtube",
+              "duration": "12:45",
+              "description": "Explicación en alta definición de la hipótesis nebular y la formación de la Tierra y planetas vecinos."
+            },
+            {
+              "title": "Escala Real del Universo y el Sol",
+              "url": "https://www.youtube.com/embed/libKVRa07fU",
+              "provider": "youtube",
+              "duration": "08:15",
+              "description": "Comparativa visual en 3D de los tamaños reales del Sol, Júpiter y la Tierra."
+            }
+          ],
+          "games": [
+            {
+              "title": "Simulador Gravitacional PhET (Órbitas y Planetas)",
+              "embedUrl": "https://phet.colorado.edu/sims/html/gravity-and-orbits/latest/gravity-and-orbits_all.html?locale=es",
+              "type": "simulation",
+              "description": "Experimenta con la gravedad interplanetaria, masa del sol y trayectorias orbitales en tiempo real."
+            },
+            {
+              "title": "Exploración Espacial 3D NASA Eyes",
+              "embedUrl": "https://eyes.nasa.gov/apps/solar-system/#/home?embed=true",
+              "type": "iframe-game",
+              "description": "Navega de manera interactiva por las sondas espaciales de la NASA en vivo."
+            }
+          ],
+          "pdfs": [
+            {
+              "title": "Guía Ilustrada de la NASA sobre el Sistema Solar",
+              "url": "https://www.nasa.gov/wp-content/uploads/2015/01/570776main_our_solar_system_guide.pdf",
+              "fileSize": "4.2 MB",
+              "description": "Documento completo en PDF publicado por la NASA con fichas de datos de cada planeta."
+            }
+          ],
+          "links": [
+            {
+              "title": "Portal de Exploración Espacial NASA",
+              "url": "https://solarsystem.nasa.gov/",
+              "siteName": "NASA Solar System Exploration",
+              "description": "Datos astronómicos actualizados diariamente por la agencia espacial estadounidense."
+            },
+            {
+              "title": "Agencia Espacial Europea (ESA) - Ciencia Planetaria",
+              "url": "https://www.esa.int/",
+              "siteName": "ESA Kids & Science",
+              "description": "Recursos educativos oficiales para estudiantes sobre misiones espaciales europeas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ia-redes-neuronales",
+      "title": "Inteligencia Artificial y Aprendizaje Profundo",
+      "category": "tecnologia",
+      "badge": "Tendencia",
+      "summary": "Descubre cómo funcionan los modelos de IA moderna, redes neuronales artificiales, LLMs y su impacto en la sociedad.",
+      "coverImage": "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80",
+      "chapters": [
+        {
+          "id": "cap-1-fundamentos-ia",
+          "title": "1. Fundamentos de las Redes Neuronales",
+          "markdownFile": "content/ia-redes-neuronales.md",
+          "videos": [
+            {
+              "title": "¿Qué es una Red Neuronal? (3Blue1Brown)",
+              "url": "https://www.youtube.com/embed/aircAruvnKk",
+              "provider": "youtube",
+              "duration": "19:13",
+              "description": "Explicación matemática y gráfica intuitiva del entrenamiento de redes neuronales."
+            }
+          ],
+          "games": [
+            {
+              "title": "TensorFlow Playground (Entrena tu red en el navegador)",
+              "embedUrl": "https://playground.tensorflow.org/",
+              "type": "interactive-lab",
+              "description": "Modifica capas, tasas de aprendizaje y funciones de activación de manera interactiva visual."
+            }
+          ],
+          "pdfs": [
+            {
+              "title": "Manual Introductorio a Deep Learning y Python",
+              "url": "https://arxiv.org/pdf/1608.06993.pdf",
+              "fileSize": "2.8 MB",
+              "description": "Artículo de investigación simplificado sobre la arquitectura de perceptrones multicapa."
+            }
+          ],
+          "links": [
+            {
+              "title": "Hugging Face - Plataforma Abierta de Modelos de IA",
+              "url": "https://huggingface.co/",
+              "siteName": "HuggingFace Hub",
+              "description": "Repositorio global de modelos de visión, lenguaje y audio."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "historia-mesoamerica",
+      "title": "Grandes Civilizaciones de Mesoamérica",
+      "category": "historia",
+      "badge": "Recomendado",
+      "summary": "Estudio arqueológico e histórico de Mayas, Aztecas, Zapotecas y Olmecas: arquitectura, astronomía y mitología.",
+      "coverImage": "https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&w=800&q=80",
+      "chapters": [
+        {
+          "id": "cap-1-mayas-aztecas",
+          "title": "1. El Esplendor Maya y la Gran Tenochtitlan",
+          "markdownFile": "content/historia-mesoamerica.md",
+          "videos": [
+            {
+              "title": "Tenochtitlan: La Capital Imposible sobre el Lago",
+              "url": "https://www.youtube.com/embed/Pj1B14Q3Nq4",
+              "provider": "youtube",
+              "duration": "15:30",
+              "description": "Reconstrucción digital en 3D de las chinampas y el Gran Templo Mayor de los Aztecas."
+            }
+          ],
+          "games": [
+            {
+              "title": "Recorrido Virtual 3D por Chichén Itzá",
+              "embedUrl": "https://my.matterport.com/show/?m=4R3D",
+              "type": "virtual-tour",
+              "description": "Explora el castillo de Kukulcán y la arquitectura maya con vista 360 grados."
+            }
+          ],
+          "pdfs": [
+            {
+              "title": "CÓDICE MENDOZA - Lectura Histórica INAH",
+              "url": "https://www.inah.gob.mx/images/codices/codice_mendoza.pdf",
+              "fileSize": "5.1 MB",
+              "description": "Documento con ilustraciones históricas y glifos náhuatl."
+            }
+          ],
+          "links": [
+            {
+              "title": "INAH - Instituto Nacional de Antropología e Historia",
+              "url": "https://www.inah.gob.mx/",
+              "siteName": "INAH Oficial",
+              "description": "Publicaciones científicas y recorridos por zonas arqueológicas."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fisica-relatividad",
+      "title": "Física Moderna: Relatividad y Cuántica",
+      "category": "fisica",
+      "badge": "Avanzado",
+      "summary": "Comprende los experimentos de Einstein, la curvatura del espacio-tiempo, agujeros negros y la física cuántica.",
+      "coverImage": "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&w=800&q=80",
+      "chapters": [
+        {
+          "id": "cap-1-relatividad-especial",
+          "title": "1. La Velocidad de la Luz y la Dilatación del Tiempo",
+          "markdownFile": "content/fisica-relatividad.md",
+          "videos": [
+            {
+              "title": "¿Por qué nada puede ir más rápido que la luz?",
+              "url": "https://www.youtube.com/embed/v9C2S_qL6_g",
+              "provider": "youtube",
+              "duration": "11:20",
+              "description": "Explicación visual del experimento de Michelson-Morley y los postulados de Einstein."
+            }
+          ],
+          "games": [
+            {
+              "title": "Simulador de Espacio-Tiempo y Curvatura PhET",
+              "embedUrl": "https://phet.colorado.edu/sims/html/wave-interference/latest/wave-interference_all.html?locale=es",
+              "type": "simulation",
+              "description": "Simulación interactiva de ondas cuánticas e interferencia luminosa."
+            }
+          ],
+          "pdfs": [
+            {
+              "title": "El Manifiesto de Einstein sobre la Relatividad Especial (1905)",
+              "url": "https://www.gutenberg.org/files/36194/36194-pdf.pdf",
+              "fileSize": "1.5 MB",
+              "description": "Traducción histórica del famoso artículo 'Sobre la electrodinámica de los cuerpos en movimiento'."
+            }
+          ],
+          "links": [
+            {
+              "title": "CERN - Laboratorio Europeo de Física de Partículas",
+              "url": "https://home.cern/",
+              "siteName": "CERN Official Portal",
+              "description": "Información directa sobre el Gran Colisionador de Hadrones (LHC)."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

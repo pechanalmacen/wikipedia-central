@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WikiEdu Central - Enciclopedia Educativa Dinámica</title>
+  <meta name="description"
+    content="Enciclopedia web interactiva basada en manifiesto JSON y archivos Markdown con soporte multimedia para videos, juegos, PDFs y enlaces.">
+
+  <!-- Estilos y Fuentes -->
+  <link rel="stylesheet" href="css/styles.css">
+
+  <!-- KaTeX CSS & JS (Para fórmulas matemáticas LaTeX) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/katex/dist/katex.min.js"></script>
+
+  <!-- Mermaid.js (Para diagramas de flujo y gráficos) -->
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+
+  <!-- Parser de Markdown Seguro (Marked.js CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
+  <!-- Google Material Symbols (Iconos de Google) -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       Encabezado Principal de la Aplicación
+       ========================================================================== -->
+  <header class="app-header">
+    <div class="header-container">
+
+      <!-- Logotipo e Identidad -->
+      <div class="brand-logo" id="brandLogo" title="Volver a la Matriz de Inicio">
+        <div class="brand-icon">
+          <i class="bi bi-journal-bookmark-fill"></i>
+        </div>
+        <div class="brand-title">WikiEdu <span>Central</span></div>
+      </div>
+
+      <!-- Buscador Global en Tiempo Real -->
+      <div class="search-bar-wrapper">
+        <i class="bi bi-search search-icon"></i>
+        <input type="search" id="globalSearchInput" class="search-input"
+          placeholder="Buscar por tema, concepto, video, simulación o PDF..." autocomplete="off">
+      </div>
+
+      <!-- Acciones y Botones Rápidos -->
+      <div class="header-actions">
+        <button id="btnExportJson" class="btn-icon admin-only d-none" title="Exportar Manifiesto topics.json">
+          <i class="bi bi-download"></i>
+        </button>
+        <button id="btnThemeToggle" class="btn-icon" title="Cambiar Tema Visual">
+          <i class="bi bi-sun-fill"></i>
+        </button>
+        <button id="btnOpenCreator" class="btn-primary admin-only d-none">
+          <i class="bi bi-plus-lg"></i> Crear / Administrar Tema
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ==========================================================================
+       VISTA 1: Dashboard / Matriz de Inicio (Default)
+       ========================================================================== -->
+  <main id="dashboardView" class="main-layout fade-in">
+
+    <!-- Hero Banner & Matriz Educativa -->
+    <section class="hero-matrix">
+      <h1 class="hero-title">Matriz Enciclopédica Educativa</h1>
+      <p class="hero-subtitle">
+        Explora conocimiento interactivo enriquecido con artículos en Markdown, videos explicativos, simulaciones
+        interactivas, guías PDF y enlaces actualizados sin modificar el HTML.
+      </p>
+      <div class="stats-grid" id="statsGrid">
+        <!-- Generado dinámicamente -->
+      </div>
+    </section>
+
+    <!-- Filtro de Categorías -->
+    <nav class="category-filter-bar" id="categoryFilterBar">
+      <!-- Generado dinámicamente por UIComponents -->
+    </nav>
+
+    <!-- Cuadrícula de Tarjetas de Temas (Matriz) -->
+    <section class="matrix-grid" id="matrixGrid">
+      <!-- Generado dinámicamente por UIComponents -->
+    </section>
+
+  </main>
+
+  <!-- ==========================================================================
+       VISTA 2: Visor de Tema y Capítulo (Reader View)
+       ========================================================================== -->
+  <section id="readerView" class="main-layout hidden fade-in">
+    <div class="reader-layout">
+
+      <!-- Barra Lateral de Navegación de Capítulos -->
+      <aside class="reader-sidebar" id="readerSidebar">
+        <!-- Generado dinámicamente -->
+      </aside>
+
+      <!-- Panel Principal de Lectura y Multimedia -->
+      <main class="reader-main" id="readerMain">
+
+        <!-- Pestañas Multimedia por Capítulo -->
+        <nav class="multimedia-tabs" id="multimediaTabs">
+          <!-- Generado dinámicamente -->
+        </nav>
+
+        <!-- Área de Contenido Dinámico (Markdown / Video / Game / PDF / Link) -->
+        <div id="tabContentArea">
+          <!-- Carga dinámica -->
+        </div>
+
+      </main>
+
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       MODAL: Creador y Administrador de Temas (Sin modificar HTML)
+       ========================================================================== -->
+  <div id="creatorModal" class="modal-backdrop">
+    <div class="modal-container">
+
+      <div class="modal-header">
+        <h2 class="modal-title"><i class="bi bi-magic" style="color: var(--accent-cyan);"></i> Crear / Administrar Tema
+          Enciclopédico</h2>
+        <button class="btn-close">&times;</button>
+      </div>
+
+<div class="modal-body">
+        <form id="creatorTopicForm">
+
+          <!-- Selector de Modo / Edición de Tema -->
+          <div class="form-group" style="background: var(--bg-main); padding: 1rem; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+            <label class="form-label" style="color: var(--accent-cyan);"><i class="bi bi-pencil-square"></i> Selecciona una Acción</label>
+            <select id="selectTopicToEdit" class="form-control">
+              <option value="NEW_TOPIC">+ Crear Un Nuevo Tema</option>
+              <!-- Se poblará dinámicamente con los temas prehechos -->
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Título del Tema *</label>
+              <input type="text" id="inputTopicTitle" class="form-control" placeholder="Ej: Mecánica Cuántica y Fotones" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Categoría *</label>
+              <select id="inputTopicCategory" class="form-control" required>
+                <option value="ciencias">Ciencias Naturales</option>
+                <option value="tecnologia">Tecnología e IA</option>
+                <option value="historia">Historia y Cultura</option>
+                <option value="fisica">Física y Universo</option>
+                <option value="arte">Arte y Diseño</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem;">
+            <div class="form-group">
+              <label class="form-label">Etiqueta / Badge</label>
+              <input type="text" id="inputTopicBadge" class="form-control" placeholder="Ej: Nuevo, Destacado">
+            </div>
+            <div class="form-group">
+              <label class="form-label">URL de Imagen de Portada</label>
+              <input type="url" id="inputTopicCover" class="form-control" placeholder="https://images.unsplash.com/...">
+            </div>
+            <div class="form-group" style="display: flex; align-items: center; margin-top: 1.5rem;">
+              <label class="form-label" style="cursor: pointer; display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="checkTopicHidden" style="width: 1.2rem; height: 1.2rem; accent-color: var(--accent-cyan);"> Ocultar tema a los usuarios
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">Resumen Ejecutivo *</label>
+            <input type="text" id="inputTopicSummary" class="form-control" placeholder="Breve descripción que se mostrará en la matriz de inicio..." required>
+          </div>
+
+          <hr style="border:0; border-top:1px solid var(--border-color); margin: 1.5rem 0;">
+
+          <!-- 1. Gestor de Capítulos del Tema -->
+          <div style="background: var(--bg-main); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.5rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <h3 style="font-size: 1.05rem; color: var(--accent-cyan); margin: 0;">
+                <i class="bi bi-collection-play"></i> Capítulos del Tema
+              </h3>
+              <button type="button" id="btnAddChapter" class="btn-primary" style="padding: 0.35rem 0.8rem; font-size: 0.8rem;">
+                <i class="bi bi-plus-lg"></i> + Añadir Capítulo
+              </button>
+            </div>
+            
+            <ul id="chaptersList" style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 0.5rem;">
+              <!-- Se listarán los capítulos con su nombre y botón de eliminar -->
+            </ul>
+          </div>
+
+          <!-- 2. Editor del Capítulo Seleccionado -->
+          <div style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1rem; margin-bottom: 1.25rem;">
+            <div class="form-group" style="margin-bottom: 1rem;">
+              <label class="form-label" style="color: var(--accent-cyan); font-weight: 700;">
+                <i class="bi bi-pencil-square"></i> Selecciona el Capítulo a Editar
+              </label>
+              <select id="selectActiveChapter" class="form-control">
+                <!-- Se poblará dinámicamente con los capítulos creados -->
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Título del Capítulo *</label>
+              <input type="text" id="inputChapterTitle" class="form-control" placeholder="Ej: 1. Fundamentos y Postulados" required>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Ruta del archivo Markdown (.md)</label>
+              <input type="text" id="inputChapterMdPath" class="form-control" placeholder="content/archivo.md" required>
+            </div>
+
+            <!-- Recursos Multimedia del Capítulo Seleccionado -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label"><i class="bi bi-youtube"></i> URL de Video (YouTube Embed)</label>
+                <input type="url" id="inputVideoUrl" class="form-control" placeholder="https://www.youtube.com/embed/...">
+              </div>
+              <div class="form-group">
+                <label class="form-label"><i class="bi bi-controller"></i> URL de Juego / Simulación (iFrame)</label>
+                <input type="url" id="inputGameUrl" class="form-control" placeholder="https://phet.colorado.edu/sims/html/...">
+              </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+              <div class="form-group">
+                <label class="form-label"><i class="bi bi-file-pdf"></i> URL de Documento PDF</label>
+                <input type="url" id="inputPdfUrl" class="form-control" placeholder="https://.../documento.pdf">
+              </div>
+              <div class="form-group">
+                <label class="form-label"><i class="bi bi-link-45deg"></i> URL de Enlace Externo</label>
+                <input type="url" id="inputLinkUrl" class="form-control" placeholder="https://sitioweb.com">
+              </div>
+            </div>
+
+            <!-- Editor Redactar Markdown con Previsualizador Rehabilitado -->
+            <div class="form-group">
+              <label class="form-label"><i class="bi bi-markdown"></i> Redactar Artículo en Markdown (.md)</label>
+              <div class="editor-grid">
+                <textarea id="editorMarkdownTextarea" class="form-control markdown-textarea" placeholder="# Escribe aquí el artículo en formato Markdown..."></textarea>
+                <div id="editorMarkdownPreview" class="preview-pane markdown-body"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn-icon btn-close"
+              style="border-radius: var(--radius-md); padding: 0.6rem 1rem; width: auto; height: auto;">Cancelar</button>
+            <button type="submit" class="btn-primary">
+              <i class="bi bi-check-lg"></i> Guardar Tema en la Enciclopedia
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts de la Aplicación -->
+  <script src="js/content-manager.js"></script>
+  <script src="js/ui-components.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+
+</html>
