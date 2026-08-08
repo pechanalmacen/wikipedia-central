@@ -157,13 +157,18 @@ const UIComponents = {
       });
 
       sidebarContainer.innerHTML = `
-        <div class="btn-back" id="btnBackToMatrix">
-          <i class="bi bi-arrow-left"></i> Volver a la Matriz
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <div class="btn-back" id="btnBackToMatrix" style="margin-bottom:0;">
+            <i class="bi bi-arrow-left"></i> Volver
+          </div>
+          <button class="btn-icon d-md-none" id="btnToggleSidebarNav" title="Ver Capítulos" style="display:none;">
+            <i class="bi bi-list"></i>
+          </button>
         </div>
-        <h3 class="topic-header-title">${topic.title}</h3>
-        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 1rem;">${topic.summary}</p>
+        <h3 class="topic-header-title" style="margin-top:0.75rem;">${topic.title}</h3>
+        <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">${topic.summary}</p>
         <div style="font-size: 0.78rem; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 0.05em; margin-bottom: 0.5rem;">Capítulos</div>
-        <ul class="chapter-nav-list">
+        <ul class="chapter-nav-list" id="chapterNavList">
           ${capNavHtml}
         </ul>
       `;

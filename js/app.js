@@ -77,7 +77,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   });
 
-  // Cambio de Capítulo en Sidebar
+// Cambio de Capítulo en Sidebar
   document.getElementById('readerSidebar')?.addEventListener('click', (e) => {
     if (e.target.closest('#btnBackToMatrix')) {
       showDashboard();
@@ -88,6 +88,11 @@ document.addEventListener('DOMContentLoaded', async () => {
       state.currentChapterIdx = parseInt(navItem.dataset.chapterIdx, 10);
       const topic = window.contentManager.getTopicById(state.currentTopicId);
       if (topic) window.UIComponents.renderReaderView(topic, state.currentChapterIdx, state.currentTab);
+
+      // Desplazamiento automático al contenido en pantallas móviles
+      if (window.innerWidth <= 768) {
+        document.getElementById('tabContentArea')?.scrollIntoView({ behavior: 'smooth' });
+      }
     }
   });
 
