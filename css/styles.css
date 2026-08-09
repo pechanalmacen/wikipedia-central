@@ -1194,8 +1194,11 @@ Dashboard / Matriz de Inicio
 @media (max-width: 768px) {
   /* Header compacto */
   .header-container {
-    flex-wrap: wrap;
-    gap: 0.75rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
   }
 
   .brand-title {
@@ -1203,9 +1206,48 @@ Dashboard / Matriz de Inicio
   }
 
   .search-bar-wrapper {
-    order: 3;
-    max-width: 100%;
-    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 105;
+    flex: 1;
+    max-width: 140px; /* Tamaño compacto por defecto en móvil */
+  }
+
+  /* Reduce el padding horizontal para que no corte el texto */
+  .search-input {
+    padding: 0.55rem 1rem 0.55rem 2.2rem;
+    font-size: 0.88rem;
+  }
+
+  .search-icon {
+    left: 0.75rem;
+  }
+
+  /* Transición suave para ocultar el título del logo si el espacio es reducido */
+  .brand-logo .brand-title {
+    transition: opacity 0.2s ease, width 0.2s ease;
+  }
+
+  /* ESTADO EXPANDIDO: Cuando se hace foco en la barra de búsqueda */
+  .search-bar-wrapper:focus-within,
+  .search-bar-wrapper.expanded {
+    max-width: 100% !important;
+    flex: 1 1 100%;
+  }
+
+  /* Oculta temporalmente el texto del logo para dejar espacio completo al buscador */
+  .header-container:has(.search-bar-wrapper:focus-within) .brand-title,
+  .header-container.search-active .brand-title {
+    opacity: 0;
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Oculta los botones de acciones extra mientras se escribe */
+  .header-container:has(.search-bar-wrapper:focus-within) .header-actions,
+  .header-container.search-active .header-actions {
+    display: none;
   }
 
   /* Reducir espacio del Hero */

@@ -423,3 +423,26 @@ const creatorModal = document.getElementById('creatorModal');
   }
 });
 
+// Manejo de expansión del buscador en móviles
+const searchWrapper = document.querySelector('.search-bar-wrapper');
+const searchInput = document.querySelector('.search-input');
+const headerContainer = document.querySelector('.header-container');
+
+if (searchInput && searchWrapper) {
+  // Al enfocar el input, activamos la clase expandida
+  searchInput.addEventListener('focus', () => {
+    if (window.innerWidth <= 768) {
+      searchWrapper.classList.add('expanded');
+      headerContainer?.classList.add('search-active');
+    }
+  });
+
+  // Al quitar el foco, volvemos al tamaño compacto
+  searchInput.addEventListener('blur', () => {
+    // Si no hay texto escrito, colapsa la barra
+    if (!searchInput.value.trim()) {
+      searchWrapper.classList.remove('expanded');
+      headerContainer?.classList.remove('search-active');
+    }
+  });
+}
