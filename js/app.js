@@ -327,6 +327,11 @@ const creatorModal = document.getElementById('creatorModal');
     const triggerBtn = document.getElementById('mobileChaptersTrigger');
     if (triggerBtn) triggerBtn.style.display = 'none';
     
+    // LIMPIAR HISTORIAL: Si se regresa manualmente al inicio, limpiar el hash de la URL
+    if (history.state?.view === 'reader') {
+      history.replaceState({ view: 'dashboard' }, '', window.location.pathname);
+    }
+
     renderDashboard();
   }
 
@@ -339,6 +344,11 @@ const creatorModal = document.getElementById('creatorModal');
     if (topic) {
       window.UIComponents.renderReaderView(topic, chapterIdx, tab);
       window.scrollTo({ top: 0, behavior: 'smooth' });
+
+      // AGREGAR AL HISTORIAL: Crea una entrada ficticia en el navegador para interceptar el botón "Atrás"
+      if (history.state?.view !== 'reader') {
+        history.pushState({ view: 'reader', topicId }, '', `#reader-${topicId}`);
+      }
     }
   }
 
@@ -494,6 +504,27 @@ const creatorModal = document.getElementById('creatorModal');
     }
 
     lastScrollY = currentScrollY;
+  });
+
+  // Interceptar el botón "Atrás" del móvil o navegador
+  window.addEventListener('popstate', (e) => {
+    const readerView = document.getElementById('readerView');
+    const isReaderVisible = readerView && !readerView.classList.contains('hidden');
+
+    // Si el lector está abierto y el usuario presiona "atrás"
+    if (isReaderVisible) {
+      // Si el sidebar en móvil está abierto, primero cerramos solo el sidebar
+      const sidebar = document.getElementById('readerSidebar');
+      if (sidebar?.classList.contains('open-mobile')) {
+        closeMobileDrawer();
+        // Mantenemos la vista en el lector reinsertando el estado
+        history.pushState({ view: 'reader' }, '', `#reader-${state.currentTopicId}`);
+        return;
+      }
+
+      // Si el sidebar estaba cerrado, regresamos a la matriz de inicio
+      showDashboard();
+    }
   });
 
 });
