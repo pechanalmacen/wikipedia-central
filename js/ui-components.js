@@ -161,9 +161,7 @@ const UIComponents = {
           <div class="btn-back" id="btnBackToMatrix" style="margin-bottom:0;">
             <i class="bi bi-arrow-left"></i> Volver
           </div>
-          <button class="btn-icon d-md-none" id="btnToggleSidebarNav" title="Ver Capítulos" style="display:none;">
-            <i class="bi bi-list"></i>
-          </button>
+          <button class="btn-close d-md-none" id="btnCloseMobileDrawer" style="font-size: 1.2rem;">&times;</button>
         </div>
         <h3 class="topic-header-title" style="margin-top:0.75rem;">${topic.title}</h3>
         <p style="font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 0.75rem;">${topic.summary}</p>
@@ -172,6 +170,22 @@ const UIComponents = {
           ${capNavHtml}
         </ul>
       `;
+
+      // Insertar botón flotante y capa oscura si no existen en el DOM
+      if (!document.getElementById('mobileChaptersTrigger')) {
+        const triggerBtn = document.createElement('button');
+        triggerBtn.id = 'mobileChaptersTrigger';
+        triggerBtn.className = 'mobile-chapters-trigger';
+        triggerBtn.innerHTML = '<i class="bi bi-list-nested"></i> Capítulos';
+        document.body.appendChild(triggerBtn);
+      }
+
+      if (!document.getElementById('mobileDrawerOverlay')) {
+        const overlay = document.createElement('div');
+        overlay.id = 'mobileDrawerOverlay';
+        overlay.className = 'mobile-drawer-overlay';
+        document.body.appendChild(overlay);
+      }
     }
 
     // Renderizar Pestañas Multimedia

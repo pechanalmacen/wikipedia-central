@@ -78,18 +78,47 @@ document.addEventListener('DOMContentLoaded', async () => {
   });
 
 // Cambio de Capítulo en Sidebar
-  document.getElementById('readerSidebar')?.addEventListener('click', (e) => {
+// Controladores para la Barra Lateral y Menú Flotante Móvil
+  const sidebar = document.getElementById('readerSidebar');
+  const triggerBtn = document.getElementById('mobileChaptersTrigger');
+  const overlay = document.getElementById('mobileDrawerOverlay');
+
+  function closeMobileDrawer() {
+    sidebar?.classList.remove('open-mobile');
+    document.getElementById('mobileDrawerOverlay')?.classList.remove('active');
+  }
+
+  function openMobileDrawer() {
+    sidebar?.classList.add('open-mobile');
+    document.getElementById('mobileDrawerOverlay')?.classList.add('active');
+  }
+
+  // Delegación de clics globales para abrir/cerrar menú desplegable en móvil
+  document.addEventListener('click', (e) => {
+    if (e.target.closest('#mobileChaptersTrigger')) {
+      openMobileDrawer();
+    } else if (e.target.closest('#mobileDrawerOverlay') || e.target.closest('#btnCloseMobileDrawer')) {
+      closeMobileDrawer();
+    }
+  });
+
+  // Cambio de Capítulo en Sidebar
+  sidebar?.addEventListener('click', (e) => {
     if (e.target.closest('#btnBackToMatrix')) {
+      closeMobileDrawer();
       showDashboard();
       return;
     }
+
     const navItem = e.target.closest('.chapter-nav-item');
     if (navItem) {
       state.currentChapterIdx = parseInt(navItem.dataset.chapterIdx, 10);
       const topic = window.contentManager.getTopicById(state.currentTopicId);
       if (topic) window.UIComponents.renderReaderView(topic, state.currentChapterIdx, state.currentTab);
 
-      // Desplazamiento automático al contenido en pantallas móviles
+      // Cierra la barra desplegable en móvil tras seleccionar un capítulo
+      closeMobileDrawer();
+
       if (window.innerWidth <= 768) {
         document.getElementById('tabContentArea')?.scrollIntoView({ behavior: 'smooth' });
       }
@@ -241,7 +270,12 @@ const creatorModal = document.getElementById('creatorModal');
   function showDashboard() {
     document.getElementById('readerView')?.classList.add('hidden');
     document.getElementById('dashboardView')?.classList.remove('hidden');
-    renderDashboard();
+  
+    // Ocultar botón flotante de capítulos al regresar al inicio
+    const triggerBtn = document.getElementById('mobileChaptersTrigger');
+    if (triggerBtn) triggerBtn.style.display = 'none';
+    
+    renderDashboard(); //[cite: 8]
   }
 
   function openTopicReader(topicId, chapterIdx = 0, tab = 'article') {
@@ -388,3 +422,4 @@ const creatorModal = document.getElementById('creatorModal');
     }
   }
 });
+
