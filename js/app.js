@@ -93,12 +93,60 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('mobileDrawerOverlay')?.classList.add('active');
   }
 
-  // Delegación de clics globales para abrir/cerrar menú desplegable en móvil
+  // Lógica para alternar el Sidebar en PC
+  function toggleSidebarPC() {
+    const readerView = document.getElementById('readerView');
+    const triggerBtn = document.getElementById('mobileChaptersTrigger');
+    
+    if (readerView) {
+      const isCollapsed = readerView.classList.toggle('sidebar-collapsed');
+      document.body.classList.toggle('pc-collapsed', isCollapsed);
+      
+      // Forzar la visibilidad del botón directamente mediante JS
+      if (triggerBtn) {
+        triggerBtn.style.display = isCollapsed ? 'flex' : 'none';
+      }
+    }
+  }
+
+// Delegación de clics globales (Móvil y PC)
   document.addEventListener('click', (e) => {
+    // 1. Clic en el botón flotante de Capítulos
     if (e.target.closest('#mobileChaptersTrigger')) {
-      openMobileDrawer();
-    } else if (e.target.closest('#mobileDrawerOverlay') || e.target.closest('#btnCloseMobileDrawer')) {
-      closeMobileDrawer();
+      if (window.innerWidth > 1024) {
+        const readerView = document.getElementById('readerView');
+        readerView?.classList.remove('sidebar-collapsed');
+        document.body.classList.remove('pc-collapsed');
+      } else {
+        openMobileDrawer();
+      }
+      return; // Salimos para evitar ejecuciones extra
+    } 
+
+    // 2. Clic en la 'X' para cerrar el sidebar
+    if (e.target.closest('#btnCloseMobileDrawer')) {
+      if (window.innerWidth > 1024) {
+        toggleSidebarPC();
+      } else {
+        closeMobileDrawer();
+      }
+      return;
+    }
+
+    // 3. NUEVO: Clic fuera del sidebar en móvil (Overlay o fondo)
+    if (window.innerWidth <= 1024) {
+      const sidebar = document.getElementById('readerSidebar');
+      const isMobileOpen = sidebar?.classList.contains('open-mobile');
+
+      if (isMobileOpen) {
+        const isClickInsideSidebar = e.target.closest('#readerSidebar');
+        const isClickOnOverlay = e.target.closest('#mobileDrawerOverlay');
+
+        // Si toca el fondo oscuro O cualquier lugar fuera del sidebar, se cierra
+        if (isClickOnOverlay || !isClickInsideSidebar) {
+          closeMobileDrawer();
+        }
+      }
     }
   });
 
@@ -268,14 +316,18 @@ const creatorModal = document.getElementById('creatorModal');
   }
 
   function showDashboard() {
-    document.getElementById('readerView')?.classList.add('hidden');
+    const readerView = document.getElementById('readerView');
+    if (readerView) {
+      readerView.classList.add('hidden');
+      readerView.classList.remove('sidebar-collapsed'); // Restablece el sidebar
+    }
+    
     document.getElementById('dashboardView')?.classList.remove('hidden');
   
-    // Ocultar botón flotante de capítulos al regresar al inicio
     const triggerBtn = document.getElementById('mobileChaptersTrigger');
     if (triggerBtn) triggerBtn.style.display = 'none';
     
-    renderDashboard(); //[cite: 8]
+    renderDashboard();
   }
 
   function openTopicReader(topicId, chapterIdx = 0, tab = 'article') {
@@ -421,6 +473,29 @@ const creatorModal = document.getElementById('creatorModal');
         : '<i class="bi bi-moon-stars-fill" style="color: #6366f1;"></i>';
     }
   }
+
+    // Ocultar Header al bajar / Mostrar al subir
+  let lastScrollY = window.scrollY;
+  const header = document.querySelector('.app-header');
+  const delta = 10; // Margen de tolerancia para evitar parpadeos con scrolls mínimos
+
+  window.addEventListener('scroll', () => {
+    const currentScrollY = window.scrollY;
+
+    // Si el desplazamiento es mínimo, no hacer nada
+    if (Math.abs(lastScrollY - currentScrollY) <= delta) return;
+
+    // Si escrolleas hacia abajo y pasaste la altura inicial del header, ocúltalo
+    if (currentScrollY > lastScrollY && currentScrollY > 80) {
+      header?.classList.add('header-hidden');
+    } else {
+      // Si escrolleas hacia arriba, muéstralo de nuevo
+      header?.classList.remove('header-hidden');
+    }
+
+    lastScrollY = currentScrollY;
+  });
+
 });
 
 // Manejo de expansión del buscador en móviles

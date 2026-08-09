@@ -113,14 +113,25 @@ textarea {
    ========================================================================== */
 
 .app-header {
-  position: sticky;
+  position: fixed;
   top: 0;
+  left: 0;
+  width: 100%;
   z-index: 100;
   background: rgba(10, 15, 29, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--border-color);
   padding: 0.85rem 1.5rem;
+  
+  /* Transición orgánica ajustada a 0.4s con curva bézier personalizada */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform; /* Prepara la aceleración por GPU para evitar tirones */
+  }
+
+/* Clase que esconde el header fuera de la pantalla */
+.app-header.header-hidden {
+  transform: translateY(-100%);
 }
 
 [data-theme="light"] .app-header {
@@ -135,6 +146,13 @@ textarea {
   justify-content: space-between;
   gap: 1.5rem;
 }
+
+/* IMPORTANTE: Compensar la altura del header fijo para que el contenido no quede tapado arriba */
+/*
+main, .main-container, #app { 
+  margin-top: 70px;
+  } /* Ajusta este valor si la altura de tu header varía */
+
 
 .brand-logo {
   display: flex;
@@ -252,7 +270,7 @@ Dashboard / Matriz de Inicio
 .main-layout {
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem 1.5rem 4rem;
+  padding: 5.5rem 1.5rem 4rem;
 }
 
 .hero-matrix {
@@ -535,10 +553,10 @@ Dashboard / Matriz de Inicio
   height: fit-content;
   position: -webkit-sticky;
   position: sticky;
-  top: 90px; /* Se queda pegado a 90px del top */
+  top: 75px; /* Se queda pegado a 90px del top */
   max-height: calc(100vh - 110px);
   overflow-y: auto;
-  z-index: 10;
+  z-index: 11;
 }
 
 /* Capa oscura de fondo para móvil cuando el menú está abierto */
@@ -1346,9 +1364,9 @@ html, body {
 /* Ajuste del contenedor principal en pantallas pequeñas */
 @media (max-width: 768px) {
   .main-layout {
-    padding: 1rem 0.75rem 2rem;
+    padding: 4.5rem 0.75rem 2rem;
     max-width: 100%;
-    overflow-x: hidden;
+    /* overflow-x: hidden; */
   }
 
   .reader-layout {
@@ -1580,5 +1598,96 @@ html, body {
   #readerView:not(.hidden) ~ .mobile-chapters-trigger,
   #readerView:not(.hidden) .mobile-chapters-trigger {
     display: flex !important;
+  }
+}
+
+/* ==========================================================================
+   Modo Lectura Enfocada / Transiciones Fluidas en PC (> 1024px)
+   ========================================================================== */
+
+@media (min-width: 1025px) {
+
+  /* Transición fluida para el Grid y Centrado del Lector */
+  .reader-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    transition: grid-template-columns 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+                max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                gap 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: grid-template-columns, max-width;
+  }
+
+  /* Animación Suave del Sidebar */
+  .reader-sidebar {
+    max-width: 300px;
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    transform-origin: left center;
+    transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                max-width 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                padding 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                margin 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    overflow: hidden;
+  }
+
+  /* ESTADO COLAPSADO EN PC: Animación de salida */
+  #readerView.sidebar-collapsed .reader-sidebar {
+    opacity: 0;
+    max-width: 0;
+    padding-left: 0;
+    padding-right: 0;
+    margin-right: -2rem; /* Cancela el gap del grid */
+    transform: translateX(-30px) scale(0.95);
+    pointer-events: none;
+  }
+
+  /* Ajuste y Centrado del Contenedor Principal (reader-main) */
+  #readerView.sidebar-collapsed .reader-layout {
+    grid-template-columns: 0px 1fr;
+    max-width: 900px;
+    margin: 0 auto;
+    gap: 0;
+  }
+
+  /* Estilos del Botón Flotante con Entrada / Salida Animada */
+  #mobileChaptersTrigger {
+    display: flex !important;
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 999;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.85rem 1.4rem;
+    border-radius: var(--radius-full);
+    background: var(--gradient-brand);
+    color: #0a0f1d;
+    font-weight: 700;
+    font-size: 0.95rem;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 242, 254, 0.4);
+    cursor: pointer;
+    
+    /* Estado inicial Oculto */
+    opacity: 0;
+    transform: translateY(20px) scale(0.8);
+    pointer-events: none;
+    transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /* Animación de Aparición del Botón Flotante */
+  #readerView.sidebar-collapsed + #mobileChaptersTrigger,
+  #readerView.sidebar-collapsed #mobileChaptersTrigger,
+  body.pc-collapsed #mobileChaptersTrigger {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+    pointer-events: auto;
+  }
+
+  #mobileChaptersTrigger:hover {
+    transform: translateY(-3px) scale(1.03);
   }
 }
